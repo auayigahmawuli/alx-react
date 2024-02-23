@@ -1,0 +1,7 @@
+.App-body {
+    margin-top: 4rem;
+    height: calc(100vh - 7rem - 162px);
+  }
+  .App-body p {
+    margin-left: 3rem;
+  }

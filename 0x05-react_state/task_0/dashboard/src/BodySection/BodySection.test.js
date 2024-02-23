@@ -1,26 +1,20 @@
 import React from 'react';
-import { StyleSheetTestUtils } from 'aphrodite';
 import { shallow } from 'enzyme';
-import BodySection from './BodySection';
+import { expect as expectChai } from 'chai';
+import BodySection from './BodySection'
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
-});
-
-afterEach(() => {
-  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-});
-
-describe('<BodySection />', () => {
-  it('renders an <h2> element and children', () => {
-    const wrapper = shallow(
-      <BodySection title="test title">
-        <p>test children node</p>
-      </BodySection>);
-
-    expect(wrapper.find('h2')).toHaveLength(1);
-    expect(wrapper.find('h2').text()).toBe('test title');
-    expect(wrapper.find('p')).toHaveLength(1);
-    expect(wrapper.find('p').text()).toBe('test children node');
+describe('Test BodySection.js', () => {
+  it('Render without crashing', (done) => {
+    expectChai(shallow(<BodySection title='test' />).exists());
+    done();
   });
-})
+
+  it('render "h2" with text "test title" and "p" with text "test children node"', (done) => {
+    const wrapper = shallow(<BodySection title='test title'><p>test children node</p></BodySection>);
+    expectChai(wrapper.find('h2')).to.have.lengthOf(1);
+    expectChai(wrapper.find('h2').text()).to.equal('test title');
+    expectChai(wrapper.find('p')).to.have.lengthOf(1);
+    expectChai(wrapper.find('p').text()).to.equal('test children node');
+    done();
+  });
+});

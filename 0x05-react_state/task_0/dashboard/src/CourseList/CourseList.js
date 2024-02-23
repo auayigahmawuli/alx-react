@@ -1,58 +1,30 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite';
-import CourseListRow from './CourseListRow';
+import './CourseList.css';
+import { arrayOf } from 'prop-types';
 import CourseShape from './CourseShape';
-import PropTypes from 'prop-types';
+import CourseListRow from './CourseListRow';
 
-const CourseList = ({ listCourses = [] }) => {
+function CourseList() {
+
   return (
-    <table id='CourseList' className={css(styles.table)}>
-      <thead className={styles.cell}>
-        <CourseListRow
-          textFirstCell="Available courses"
-          isHeader={true}
-          styles={styles.cell}
-        />
-        <CourseListRow
-          textFirstCell="Course name"
-          textSecondCell="Credit"
-          isHeader={true}
-          styles={styles.cell}
-        />
+    <table id='CourseList' className="CourseList__container">
+      <thead>
+        <CourseListRow isHeader={true} textFirstCell="Available courses"></CourseListRow>
+        <CourseListRow isHeader={true} textFirstCell="Course name" textSecondCell="Credit"></CourseListRow>
       </thead>
       <tbody>
-        {
-          listCourses.length > 0
-            ? listCourses.map(({ id, name, credit }) => (
-              <CourseListRow
-                key={id}
-                textFirstCell={name}
-                textSecondCell={credit}
-                styles={styles.cell}
-              />
-            ))
-            : <CourseListRow textFirstCell='No course available yet' styles={styles.cell} />
-        }
+      {listCourses.length === 0 ? (<CourseListRow textFirstCell="No course available yet" isHeader={false} />) : <></>}
+      {listCourses.map((course) => (<CourseListRow key={course.id} textFirstCell={course.name} textSecondCell={course.credit} isHeader={false} />))}
       </tbody>
     </table>
   );
 }
 
 CourseList.propTypes = {
-  listCourses: PropTypes.arrayOf(CourseShape)
-}
-
-const styles = StyleSheet.create({
-  table: {
-    border: '1px solid #ddd',
-    width: '80%',
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  },
-  cell: {
-    border: '1px solid #ddd',
-    width: '80%'
-  }
-})
+  listCourses: arrayOf(CourseShape),
+};
+CourseList.defaultProps = {
+  listCourses: [],
+};
 
 export default CourseList;

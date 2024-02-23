@@ -1,49 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
 
-const rowStyle = { color: '#f5f5f5ab' };
-const headerStyle = { color: '#deb5b545' };
+function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {
+  let cell;
+  const style = {
+    headerStyle: { backgroundColor: '#deb5b545' },
+    rowStyle: { backgroundColor: '#f5f5f5ab' },
+  };
 
-const CourseListRow = ({ isHeader = false, textFirstCell, textSecondCell = null }) => {
-  return (
-    <tr style={
-      isHeader
-        ? headerStyle
-        : rowStyle
-    }>
-      {
-        isHeader
-          ? textSecondCell
-            ?
-            <>
-              <th className={css(styles.cell)}>{textFirstCell}</th>
-              <th className={css(styles.cell)}>{textSecondCell}</th>
-            </>
-            : <th colSpan={2}>{textFirstCell}</th>
-          : <>
-            <td className={css(styles.cell)}>{textFirstCell}</td>
-            <td className={css(styles.cell)}>{textSecondCell}</td>
-          </>
-      }
-    </tr>
-  );
+  if (!isHeader) {
+    cell = (
+      <>
+      <td>{textFirstCell}</td>
+      <td>{textSecondCell}</td>
+      </>
+    );
+  }
+  else {
+    if (textSecondCell) {
+      cell = (
+        <>
+        <th>{textFirstCell}</th>
+        <th>{textSecondCell}</th>
+        </>
+      );
+    }
+    else cell = (<th colSpan='2'>{textFirstCell}</th>);
+  }
+  return(<tr style={ isHeader ? style.headerStyle : style.rowStyle }>{cell}</tr>);
 }
 
 CourseListRow.propTypes = {
   isHeader: PropTypes.bool,
   textFirstCell: PropTypes.string.isRequired,
-  textSecondCell: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ])
-}
+  textSecondCell: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
 
-const styles = StyleSheet.create({
-  cell: {
-    border: '1px solid #ddd',
-    width: '80%'
-  }
-})
+CourseListRow.defaultProps = {
+  isHeader: false,
+  textSecondCell: null,
+};
 
 export default CourseListRow;
